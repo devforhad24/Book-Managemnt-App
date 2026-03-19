@@ -1,29 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
+import { useBooks } from "../context/BookContext";
+import Hero from "../components/Hero";
 
 const Home = () => {
-    const [books, setBooks] = useState([])
+  const { books, currentBook, loading, error } = useBooks();
 
-    useEffect(() => {
-        fetch('http://localhost:3000/books')
-            .then(res => res.json())
-            .then(data => setBooks(data.books))
-    }, [])
+  console.log(books);
 
-    // console.log(books)
-  return (
-    <div>
-      {books.map(book => (
-        <div key={book._id} className='text-center'>
-          <h2 className='font-bold text-amber-600'>{book.title}</h2>
-          <p>{book.description}</p>
-          <p>Author: {book.author}</p>
-          <p>Published Year: {book.publishedYear}</p>
-          <p>Price: ${book.price.toFixed(2)}</p>
-          <br />
-        </div>
-      ))}
+  return <div>
+    <Hero/>
+
+    <div className="container mx-auto">
+      {books.length > 0 ? (
+        <div>{books.map((book) => (
+          <div key={book._id} className="space-y-6">
+            {book.title}
+          </div>
+        ))}</div>
+      ) : (
+        "No books found"
+      )}
     </div>
-  )
-}
+  </div>;
+};
 
-export default Home
+export default Home;
